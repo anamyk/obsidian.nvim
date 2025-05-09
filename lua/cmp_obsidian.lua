@@ -150,10 +150,25 @@ source.complete = function(_, request, callback)
           ---@type string, string, string, table|?
           local final_label, sort_text, new_text, documentation
           if option.label then
-            new_text = client:format_link(
-              note,
-              { label = option.label, link_style = link_style, anchor = option.anchor, block = option.block }
-            )
+            -- new_text = client:format_link(
+            --   note,
+            --   { label = option.label, link_style = link_style, anchor = option.anchor, block = option.block }
+            -- )
+            local note_path = note.path:relative_to(client:vault_root()).filename:gsub("%.md$", "")
+
+            local heading = option.anchor and option.anchor.header or nil
+            local alias = note.aliases and note.aliases[1] or note:display_name()
+
+            if heading and alias then
+              local display = alias .. "#" .. heading
+              new_text = string.format("[[%s#%s|%s]]", note_path, heading, display)
+            else
+              -- fallback to default Obsidian formatter
+              new_text = client:format_link(
+                note,
+                { label = option.label, link_style = link_style, anchor = option.anchor, block = option.block }
+              )
+            end
 
             final_label = assert(option.alt_label or option.label)
             if option.anchor then

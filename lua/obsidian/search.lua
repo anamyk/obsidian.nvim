@@ -279,6 +279,7 @@ end
 ---@field max_count_per_file integer|?
 ---@field escape_path boolean|?
 ---@field include_non_markdown boolean|?
+---@field follow boolean|? whether to follow symlinks
 local SearchOpts = abc.new_class {
   __tostring = function(self)
     return string.format("search.SearchOpts(%s)", vim.inspect(self:as_tbl()))
@@ -346,6 +347,10 @@ SearchOpts.to_ripgrep_opts = function(self)
 
   if self.max_count_per_file ~= nil then
     opts[#opts + 1] = "-m=" .. self.max_count_per_file
+  end
+
+  if self.follow then
+    opts[#opts + 1] = "--follow"
   end
 
   return opts
@@ -417,6 +422,13 @@ M.build_find_cmd = function(path, term, opts)
     end
     additional_opts[#additional_opts + 1] = path
   end
+
+  -- local find_cmd = vim.deepcopy(M._FIND_CMD)
+  -- if opts.follow then
+  --   find_cmd[#find_cmd + 1] = "--follow"
+  -- end
+
+  -- return compat.flatten { find_cmd, opts:to_ripgrep_opts(), additional_opts }
 
   return compat.flatten { M._FIND_CMD, opts:to_ripgrep_opts(), additional_opts }
 end

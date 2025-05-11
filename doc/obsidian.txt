@@ -491,6 +491,10 @@ carefully and customize it to your needs:
       -- that `:ObsidianQuickSwitch` will show the notes sorted by latest modified time
       sort_by = "modified",
       sort_reversed = true,
+
+      -- Optional, to follow symlinks in file searches (e.g., for :ObsidianQuickSwitch),
+      -- set 'true', defaults to false
+      follow = false,
     
       -- Set the maximum number of lines to read from notes on disk when performing certain searches.
       search_max_lines = 1000,

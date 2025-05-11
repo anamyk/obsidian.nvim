@@ -27,6 +27,7 @@ local config = {}
 ---@field open_app_foreground boolean|?
 ---@field sort_by obsidian.config.SortBy|?
 ---@field sort_reversed boolean|?
+---@field follow boolean|? whether to follow symlinks in file search
 ---@field search_max_lines integer
 ---@field open_notes_in obsidian.config.OpenStrategy
 ---@field ui obsidian.config.UIOpts | table<string, any>
@@ -60,6 +61,7 @@ config.ClientOpts.default = function()
     open_app_foreground = false,
     sort_by = "modified",
     sort_reversed = true,
+    follow = false,
     search_max_lines = 1000,
     open_notes_in = "current",
     ui = config.UIOpts.default(),
